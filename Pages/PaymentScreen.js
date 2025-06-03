@@ -3,17 +3,22 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert, Image } from 'react-na
 import { RadioButton } from 'react-native-paper';
 import TopPriceBar from '../Components/TopPriceBar';
 
-export default function PaymentScreen() {
+
+export default function PaymentScreen({route,navigation}) {
   const [paymentMethod, setPaymentMethod] = useState('cash');
+const { amount ,quantity} = route.params;
+console.log(amount ,quantity,'amount ,quantity');
 
   const handlePayment = () => {
     Alert.alert('Payment Selected', `You selected ${paymentMethod === 'cash' ? 'Cash on Delivery' : 'UPI Payment'}`);
+    navigation.navigate('OrderSuccessScreen');
   };
 
   return (
     <View>
-        <TopPriceBar/>
+        <TopPriceBar amount={amount} quantity={quantity}/>
     
+  
     <View style={styles.container}>
     
       <Text style={styles.header}>Select Payment Method</Text>
@@ -46,6 +51,7 @@ export default function PaymentScreen() {
         <Text style={styles.processButtonText}>Process Payment</Text>
       </TouchableOpacity>
     </View>
+
     </View>
   );
 }
@@ -55,7 +61,7 @@ const styles = StyleSheet.create({
     padding: 24,
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
-    marginTop:90
+    // marginTop:90
   },
   header: {
     fontSize: 24,

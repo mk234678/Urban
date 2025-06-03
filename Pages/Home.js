@@ -34,7 +34,7 @@ const services = [
   // Add more services here...
 ];
 
-export default function App() {
+export default function App({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
 const [searchQuery, setSearchQuery] = useState('');
@@ -42,6 +42,8 @@ const [searchQuery, setSearchQuery] = useState('');
     setSelectedService(service);
     setModalVisible(true);
   };
+const { loc } = route.params || {};
+console.log(loc,'loclocloc');
 
   const renderServiceCard = ({ item }) => (
     <TouchableOpacity style={styles.card} onPress={() => openModal(item)}>
@@ -51,14 +53,19 @@ const [searchQuery, setSearchQuery] = useState('');
   );
 
   const renderSubService = ({ item }) => (
-    <View style={styles.subCard}>
+    <TouchableOpacity onPress={()=>{navigation.navigate('AllDetails');setModalVisible(false)}}>
+    <View style={styles.subCard} >
       <Image source={item.image} style={styles.subIcon} />
       <Text style={styles.subLabel}>{item.title}</Text>
     </View>
+    </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
+      <Text style={{  fontSize: 15,
+    fontWeight: 'bold',
+    marginBottom: 10, }}>What are you looking for?</Text>
        <TextInput
   placeholder="Search..."
   value={searchQuery}
@@ -159,7 +166,7 @@ modalContent: {
     alignItems: 'center',
   },
   subCard: {
-    width: 120,
+    width: 90,
     height: 100,
     alignItems: 'center',
     justifyContent: 'center',

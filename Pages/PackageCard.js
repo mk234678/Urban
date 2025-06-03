@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import VideoPlay from '../Components/VideoPlay';
 
-export default function PackageCard() {
+export default function PackageCard({navigation}) {
   const [quantity, setQuantity] = useState(0);
 
   const increase = () => setQuantity(prev => prev + 1);
@@ -27,7 +27,7 @@ export default function PackageCard() {
         <Text style={styles.packageTitle}>Complete waxing (tin)</Text>
         <Text style={styles.rating}>⭐ 4.91 (463K reviews)</Text>
         <Text style={styles.price}>
-          ₹1,600 <Text style={styles.oldPrice}>₹1,687</Text> • 1 hr 25 min
+          ₹600 <Text style={styles.oldPrice}>₹1600</Text> • 30 min
         </Text>
 
         <View style={styles.description}>
@@ -60,7 +60,8 @@ export default function PackageCard() {
 
       {/* Show Next button if quantity > 0 */}
       {quantity > 0 && (
-        <TouchableOpacity style={styles.nextBtn}>
+        <TouchableOpacity style={styles.nextBtn} onPress={() => navigation.navigate('payment', { amount: quantity * 600,quantity:quantity })}
+>
           <Text style={styles.nextBtnText}>Next</Text>
         </TouchableOpacity>
       )}

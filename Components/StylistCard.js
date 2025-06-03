@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // For arrow icon
 
-export default function StylistCard({ image, title, priceTag, label, brands }) {
+export default function StylistCard({ image, title, priceTag, label, brands ,navigation}) {
   return (
     <TouchableOpacity style={styles.card}>
       <Image source={image} style={styles.image} />
@@ -18,7 +18,9 @@ export default function StylistCard({ image, title, priceTag, label, brands }) {
           ))}
         </View>
       </View>
+      <TouchableOpacity onPress={()=>navigation.navigate('PackageCard')}>
       <Ionicons name="chevron-forward" size={20} color="#555" />
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }

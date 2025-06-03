@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 
-export default function OTPScreen({ }) {
+export default function OTPScreen({ navigation}) {
   const [otp, setOtp] = useState('');
   const { phone } = 999999999;
 
   const verifyOtp = () => {
     if (otp === '1234') {
       Alert.alert('Success', 'OTP Verified!');
+       navigation.navigate('LocationFetcher');
       // Navigate to Home or Dashboard
     } else {
       Alert.alert('Error', 'Invalid OTP');

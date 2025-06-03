@@ -21,7 +21,7 @@ export default function LoginScreen({ navigation }) {
         style={styles.input}
       />
       <Button title="Send OTP" onPress={handleLogin} />
-       <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+       <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
         <Text style={styles.footerText}>New user? Register</Text>
       </TouchableOpacity>
     </View>

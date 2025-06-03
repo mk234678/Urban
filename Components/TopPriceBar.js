@@ -7,24 +7,24 @@ import {
   FlatList,
 } from "react-native";
 
-export default function TopPriceBar() {
+export default function TopPriceBar({amount,quantity}) {
   const [items, setItems] = useState([
     {
       id: "1",
       title: "Complete waxing ...",
-      discountedPrice: 1812,
-      originalPrice: 1907,
+      discountedPrice: amount,
+      originalPrice: 1600*quantity,
       services: ["Upper lip x1", "RICA gold roll-on x1", "RICA gold roll-on x1"],
-      quantity: 1,
+      quantity: quantity,
     },
-    {
-      id: "2",
-      title: "Complete waxing ...",
-      discountedPrice: 1812,
-      originalPrice: 1907,
-      services: ["Upper lip x1", "RICA gold roll-on x1", "RICA gold roll-on x1"],
-      quantity: 1,
-    },
+    // {
+    //   id: "2",
+    //   title: "Complete waxing ...",
+    //   discountedPrice: 1812,
+    //   originalPrice: 1907,
+    //   services: ["Upper lip x1", "RICA gold roll-on x1", "RICA gold roll-on x1"],
+    //   quantity: 1,
+    // },
   ]);
 
   const handleQuantityChange = (id, delta) => {
@@ -40,7 +40,7 @@ export default function TopPriceBar() {
   };
 
   const totalAmount = items.reduce(
-    (sum, item) => sum + item.originalPrice * item.quantity,
+    (sum, item) => sum + item.discountedPrice * item.quantity,
     0
   );
 
@@ -87,7 +87,7 @@ export default function TopPriceBar() {
   <View style={styles.topBar}>
     <Text style={styles.label}>Amount to pay</Text>
     <Text style={styles.amount}>₹{totalAmount}</Text>
-    <Text style={styles.breakup}>View breakup</Text>
+    {/* <Text style={styles.breakup}>View breakup</Text> */}
   </View>
 </View>
 
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
 container: {
   flex: 1,
   backgroundColor: '#fff',
-  paddingTop:110
+  // paddingTop:110
 },
 listContainer: {
   flex: 1,

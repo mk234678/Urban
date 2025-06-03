@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Button, StyleSheet, Animated, Easing,Image } from 'react-native';
 import * as Location from 'expo-location';
 
-export default function App() {
+export default function App({ navigation }) {
   const [location, setLocation] = useState(null);
   const [fetching, setFetching] = useState(true);
 
@@ -52,6 +52,7 @@ export default function App() {
 
       const loc = await Location.getCurrentPositionAsync({});
       setLocation(loc);
+      navigation.navigate('Home', { loc });
     } catch (err) {
       alert('Failed to get location');
     } finally {
