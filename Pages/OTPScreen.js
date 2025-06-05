@@ -1,23 +1,50 @@
 // screens/OTPScreen.js
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-
-export default function OTPScreen({ navigation}) {
+import { ScrollView, Text, TextInput, Button, StyleSheet, Alert, KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard, } from 'react-native';
+import axiosInstance from '../axiosInstance';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+export default function OTPScreen({route, navigation}) {
   const [otp, setOtp] = useState('');
   const { phone } = 999999999;
+const { email } = route.params;
+  const verifyOtp = async() => {
+    // if (otp === '1234') {
+    //   Alert.alert('Success', 'OTP Verified!');
+    //    navigation.navigate('LocationFetcher');
+    //   // Navigate to Home or Dashboard
+    // } else {
+    //   Alert.alert('Error', 'Invalid OTP');
+    // }
+if(otp){
+     try {
+      const response = await axiosInstance.post('/loginnext', {
+        email:email ,
+        otp: otp,
+      });
+      console.log(response);
+ await AsyncStorage.setItem('token', JSON.stringify(response.data.token));
+         navigation.navigate('LocationFetcher');
 
-  const verifyOtp = () => {
-    if (otp === '1234') {
-      Alert.alert('Success', 'OTP Verified!');
-       navigation.navigate('LocationFetcher');
-      // Navigate to Home or Dashboard
-    } else {
+    } catch (error) {
+      console.error('Registration Error:', error.response?.data || error.message);
       Alert.alert('Error', 'Invalid OTP');
     }
+  }else{
+Alert.alert('Error', 'fill OTP');
+  }
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1 }}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    
+            <ScrollView contentContainerStyle={styles.container}   keyboardShouldPersistTaps="handled" >
       <Text style={styles.title}>OTP Verification</Text>
       <Text style={styles.subtitle}>Sent to {phone}</Text>
       <TextInput
@@ -26,15 +53,17 @@ export default function OTPScreen({ navigation}) {
         value={otp}
         onChangeText={setOtp}
         style={styles.input}
-        maxLength={4}
+        maxLength={6}
       />
       <Button title="Verify OTP" onPress={verifyOtp} />
-    </View>
+    </ScrollView>
+    </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 24,
     justifyContent: 'center',
     backgroundColor: '#fff'

@@ -96,12 +96,12 @@ export default function TopPriceBar({amount,quantity}) {
 
 const styles = StyleSheet.create({
 container: {
-  flex: 1,
+  // flex: 1,
   backgroundColor: '#fff',
   // paddingTop:110
 },
 listContainer: {
-  flex: 1,
+  // flex: 1,
 },
 topBar: {
   position: 'absolute',

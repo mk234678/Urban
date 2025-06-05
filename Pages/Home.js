@@ -42,8 +42,8 @@ const [searchQuery, setSearchQuery] = useState('');
     setSelectedService(service);
     setModalVisible(true);
   };
-const { loc } = route.params || {};
-console.log(loc,'loclocloc');
+const { address } = route.params || {};
+console.log(address,'loclocloc');
 
   const renderServiceCard = ({ item }) => (
     <TouchableOpacity style={styles.card} onPress={() => openModal(item)}>
@@ -65,7 +65,7 @@ console.log(loc,'loclocloc');
     <View style={styles.container}>
       <Text style={{  fontSize: 15,
     fontWeight: 'bold',
-    marginBottom: 10, }}>What are you looking for?</Text>
+    marginBottom: 10, }}>{address}</Text>
        <TextInput
   placeholder="Search..."
   value={searchQuery}

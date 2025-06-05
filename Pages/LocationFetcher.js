@@ -39,7 +39,7 @@ export default function App({ navigation }) {
       ])
     ).start();
   };
-
+ const [locationDetails, setLocationDetails] = useState(null);
   const fetchLocation = async () => {
     setFetching(true);
     try {
@@ -51,8 +51,14 @@ export default function App({ navigation }) {
       }
 
       const loc = await Location.getCurrentPositionAsync({});
+        let [address] = await Location.reverseGeocodeAsync({
+        latitude: loc.coords.latitude,
+        longitude: loc.coords.longitude
+      });
+
+      // setLocationDetails(address);
       setLocation(loc);
-      navigation.navigate('Home', { loc });
+      navigation.navigate('Home', { "address":address.formattedAddress });
     } catch (err) {
       alert('Failed to get location');
     } finally {

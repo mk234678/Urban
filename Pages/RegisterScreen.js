@@ -1,43 +1,122 @@
-// screens/RegisterScreen.js
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ActivityIndicator
+} from 'react-native';
+import axiosInstance from '../axiosInstance';
+import axios from 'axios';
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [username, setusername] = useState('');
 
-  const handleRegister = () => {
-    // Normally you would call API to register
-    navigation.navigate('OTP', { phone });
+const [loading, setLoading] = useState(false);
+ const handleRegister = async () => {
+    if (name && phone && username) {
+      setLoading(true); // Start loading
+
+      try {
+        const response = await axios.post(
+          'https://urban-server-smoky.vercel.app/register',
+          {
+            email: name,
+            password: phone,
+            username: username,
+          }
+        );
+
+        console.log('Registration Success:', response.data);
+        navigation.navigate('OTP', { email: name });
+
+      } catch (error) {
+        if (error.response) {
+          if (error.response.status === 409) {
+            Alert.alert('Error', 'User already exists. Try logging in.');
+          } else {
+            Alert.alert('Error', error.response.data?.message || 'Registration failed!');
+          }
+        } else {
+          Alert.alert('Network Error', error.message);
+        }
+      } finally {
+        setLoading(false); // Stop loading
+      }
+
+    } else {
+      Alert.alert('Error', 'Fill all fields');
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
-      <TextInput placeholder="Name" value={name} onChangeText={setName} style={styles.input} />
-      <TextInput placeholder="Phone" value={phone} onChangeText={setPhone} style={styles.input} keyboardType="phone-pad" />
-      <Button title="Register & Send OTP" onPress={handleRegister} />
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={styles.container}   keyboardShouldPersistTaps="handled" >
+          <Text style={styles.title}>Register</Text>
+          <TextInput
+            placeholder="Name"
+            value={username}
+            onChangeText={setusername}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Email"
+            value={name}
+            onChangeText={setName}
+            style={styles.input}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <TextInput
+            placeholder="Password"
+            value={phone}
+            onChangeText={setPhone}
+            style={styles.input}
+            secureTextEntry
+          />
+          <TouchableOpacity
+            style={[styles.button, loading && { backgroundColor: '#aaa' }]}
+            onPress={handleRegister}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Register</Text>
+            )}
+          </TouchableOpacity>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 24,
     justifyContent: 'center',
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
   },
   title: {
     fontSize: 26,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: '#333'
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 20
+    color: '#333',
+    textAlign: 'center',
   },
   input: {
     height: 50,
@@ -46,22 +125,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingHorizontal: 16,
     marginBottom: 20,
-    fontSize: 16
+    fontSize: 16,
   },
-  button: {
-    backgroundColor: '#6200EE',
-    paddingVertical: 14,
-    borderRadius: 12,
-    alignItems: 'center'
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16
-  },
-  footerText: {
-    textAlign: 'center',
-    color: '#6200EE',
-    marginTop: 16
-  }
 });
-

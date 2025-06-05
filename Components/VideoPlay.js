@@ -22,7 +22,7 @@ export default function VideoPlay() {
 
   return (
     <View style={styles.container}>
-      <Video
+      {/* <Video
         ref={video}
         source={require('../assets/video.mp4')}
         style={styles.video}
@@ -30,7 +30,7 @@ export default function VideoPlay() {
         isLooping
         isMuted={false}
         useNativeControls={false}
-      />
+      /> */}
     </View>
   );
 }

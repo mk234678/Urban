@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, Image ,Linking} from 'react-native';
 import { RadioButton } from 'react-native-paper';
 import TopPriceBar from '../Components/TopPriceBar';
 
@@ -9,13 +9,29 @@ export default function PaymentScreen({route,navigation}) {
 const { amount ,quantity} = route.params;
 console.log(amount ,quantity,'amount ,quantity');
 
+  const upiUrl = `upi://pay?pa=mrinmaymanna2001@okicici&pn=Mousumi&am=${amount}&cu=INR`;
+
+  const openUpi = async () => {
+    const canOpen = await Linking.canOpenURL(upiUrl);
+    if (!canOpen) {
+      Alert.alert('No UPI app found on this device');
+      return;
+    }
+    Linking.openURL(upiUrl);
+  };
+
   const handlePayment = () => {
-    Alert.alert('Payment Selected', `You selected ${paymentMethod === 'cash' ? 'Cash on Delivery' : 'UPI Payment'}`);
+    // Alert.alert('Payment Selected', `You selected ${paymentMethod === 'cash' ? 'Cash on Delivery' : 'UPI Payment'}`);
+    if(paymentMethod==='upi'){
+      openUpi()
+    }else{
     navigation.navigate('OrderSuccessScreen');
+    }
   };
 
   return (
     <View>
+     
         <TopPriceBar amount={amount} quantity={quantity}/>
     
   
@@ -57,7 +73,7 @@ console.log(amount ,quantity,'amount ,quantity');
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     padding: 24,
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
