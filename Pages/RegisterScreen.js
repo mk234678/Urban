@@ -11,9 +11,10 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableOpacity
 } from 'react-native';
-import axiosInstance from '../axiosInstance';
+
 import axios from 'axios';
 
 export default function RegisterScreen({ navigation }) {
@@ -126,5 +127,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 20,
     fontSize: 16,
+  },
+    button: {
+    backgroundColor: '#007bff',
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
   },
 });
